@@ -90,13 +90,19 @@ export default function FooterCom() {
             <Footer.Icon
               href="https://www.facebook.com/profile.php?id=100001094178308"
               icon={BsFacebook}
+              target="_blank"
             />
             <Footer.Icon
               href="https://www.instagram.com/fisguxsoe/"
               icon={BsInstagram}
+              target="_blank"
             />
-            <Footer.Icon href="https://github.com/Nihafis/" icon={BsGithub} />
-            <Footer.Icon href="#" icon={BsDribbble} />
+            <Footer.Icon
+              href="https://github.com/Nihafis/"
+              icon={BsGithub}
+              target="_blank"
+            />
+            <Footer.Icon href="#" icon={BsDribbble} target="_blank" />
           </div>
         </div>
       </div>
