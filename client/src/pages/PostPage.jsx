@@ -75,4 +75,4 @@ export default function PostPage() {
       <CommentSection postId={post._id} />
     </main>
   );
-}
+} 
