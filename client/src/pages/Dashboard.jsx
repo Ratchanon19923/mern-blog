@@ -7,6 +7,7 @@ import DashUsers from "../components/DashUsers";
 import Stock from "../components/Stock";
 import DashComments from "../components/DashComments";
 import DashboardComponent from "../components/DashboardComponent";
+import StockPort from "../components/StockPort";
 
 export default function Dashboard() {
   const location = useLocation();
@@ -33,6 +34,8 @@ export default function Dashboard() {
       {tab === "users" && <DashUsers />}
       {/* stock */}
       {tab === "stock" && <Stock />}
+      {/* stockPort */}
+      {tab === "stockPort" && <StockPort />}
       {/* comment */}
       {tab === "comments" && <DashComments />}
       {/* dashboard */}

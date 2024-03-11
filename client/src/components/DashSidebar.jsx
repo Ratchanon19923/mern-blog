@@ -6,7 +6,9 @@ import {
   HiOutlineUserGroup,
   HiAnnotation,
   HiChartPie,
+  HiDocumentReport,
 } from "react-icons/hi";
+import { SiBitcoinsv } from "react-icons/si";
 import { Link, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { signoutSuccess } from "../redux/user/userSlice";
@@ -72,17 +74,31 @@ export default function DashSidebar() {
               Profile
             </Sidebar.Item>
           </Link>
-          <Link to="/dashboard?tab=stock">
-            <Sidebar.Item
-              active={tab === "stock"}
-              icon={HiUser}
-              label={currentUser.isAdmin ? "Admin" : "User"}
-              labelColor="dark"
-              as="div"
-            >
-              Stock
-            </Sidebar.Item>
-          </Link>
+          <Sidebar.Collapse icon={SiBitcoinsv} label="E-commerce">
+            <Link to="/dashboard?tab=stock">
+              <Sidebar.Item
+                active={tab === "stock"}
+                icon={SiBitcoinsv}
+                label={currentUser.isAdmin ? "Admin" : "User"}
+                labelColor="dark"
+                as="div"
+              >
+                Stock
+              </Sidebar.Item>
+            </Link>{" "}
+            <Link to="/dashboard?tab=stockPort">
+              <Sidebar.Item
+                active={tab === "stockPort"}
+                icon={HiDocumentReport}
+                label={currentUser.isAdmin ? "Admin" : "User"}
+                labelColor="dark"
+                as="div"
+              >
+                Portfolio
+              </Sidebar.Item>
+            </Link>
+          </Sidebar.Collapse>
+
           {currentUser.isAdmin && (
             <Link to="/dashboard?tab=posts">
               <Sidebar.Item
