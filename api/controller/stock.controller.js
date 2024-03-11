@@ -26,3 +26,29 @@ export const addTransactions = async (req, res, next) => {
     next(error);
   }
 };
+
+export const getTransactions = async (req, res, next) => {
+  
+  if (!req.user.isAdmin || req.params.userId !== req.user.id) {
+    return next(errorHandler(403, "You are not allowed to get transaction"));
+  }
+
+  try {
+    const startIndex = parseInt(req.query.startIndex) || 0;
+    const limit = parseInt(req.query.limit) || 9;
+    const sortDirection = req.query.sort === "asc" ? 1 : -1;
+
+    const transactions = await Stock.find({
+      userId: req.params.userId,
+    })
+      .skip(startIndex)
+      .limit(limit)
+      .sort({ createdAt: sortDirection });
+
+    res.json({
+      transactions,
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
+};

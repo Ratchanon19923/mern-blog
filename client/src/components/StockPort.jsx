@@ -1,16 +1,19 @@
 import { Label, TextInput, Table, Button } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { CiCirclePlus } from "react-icons/ci";
+import { useSelector } from "react-redux";
 
 import DynamicInput from "./DynamicInput";
 
 export default function StockPort() {
+  const { currentUser } = useSelector((state) => state.user);
   const apiKey = "017ea3f5e613421c8c2462d6974bc312"; // Replace 'YOUR_API_KEY' with your actual API key
   const baseCurrency = "USD";
   const targetCurrency = "THB";
 
   const [exchange, setExchange] = useState(null);
-  const [inputVisible, setInputVisible] = useState(false);
+
+  const [transactons, setTransactions] = useState([]);
 
   useEffect(() => {
     const exchangeRate = async () => {
@@ -30,9 +33,22 @@ export default function StockPort() {
     exchangeRate();
   });
 
-  const handleClick = () => {
-    setInputVisible(true);
-  };
+  useEffect(() => {
+    const getTransactions = async () => {
+      try {
+        const res = await fetch(`api/stock/getTransactions/${currentUser._id}`);
+        if (res.ok) {
+          const data = await res.json();
+          setTransactions(data.transactions);
+        }
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+    getTransactions();
+  }, [currentUser]);
+
+  console.log(transactons);
 
   return (
     <div className="mx-auto p-8 w-full">
@@ -58,29 +74,41 @@ export default function StockPort() {
         </h1>
         <Table>
           <Table.Head>
-            <Table.HeadCell>Symbol</Table.HeadCell>
+            <Table.HeadCell>Date</Table.HeadCell>
             <Table.HeadCell>Name</Table.HeadCell>
             <Table.HeadCell>Price</Table.HeadCell>
             <Table.HeadCell>Vol.</Table.HeadCell>
             <Table.HeadCell> Value </Table.HeadCell>
           </Table.Head>
           <Table.Body className="divide-y">
-            <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
-              <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                {'Apple MacBook Pro 17"'}
-              </Table.Cell>
-              <Table.Cell>Sliver</Table.Cell>
-              <Table.Cell>Laptop</Table.Cell>
-              <Table.Cell>$2999</Table.Cell>
-              <Table.Cell>
-                <a
-                  href="#"
-                  className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
-                >
-                  Edit
-                </a>
-              </Table.Cell>
-            </Table.Row>
+            {transactons ? (
+              <>
+                {transactons.map((transac) => (
+                  <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
+                    <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                      {transac.dateBuy }
+                    </Table.Cell>
+                    <Table.Cell> {transac.symbol}</Table.Cell>
+                    <Table.Cell> {transac.price}</Table.Cell>
+                    <Table.Cell> {transac.volume}</Table.Cell>
+                    <Table.Cell>
+                      <a
+                        href="#"
+                        className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
+                      >
+                        Edit
+                      </a>
+                    </Table.Cell>
+                  </Table.Row>
+                ))}
+              </>
+            ) : (
+              <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
+                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                  No Transaction
+                </Table.Cell>
+              </Table.Row>
+            )}
           </Table.Body>
         </Table>
       </div>

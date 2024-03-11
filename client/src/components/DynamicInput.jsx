@@ -17,6 +17,7 @@ export default function DynamicInput() {
   const [selectedDates, setSelectedDates] = useState({});
   const [Transctions, setTransactions] = useState([]); 
 
+  console.log(Transctions);
   const handleAddInput = (index) => {
     const newDateInput = { ...inputs[index], dateBuy: now };
     setInputs([...inputs, newDateInput]); // Add a new empty input field to the inputs array
