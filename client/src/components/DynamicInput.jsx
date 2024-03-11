@@ -1,4 +1,4 @@
-import { useState, forwardRef, useRef } from "react";
+import { useState } from "react";
 import { Button, TextInput } from "flowbite-react";
 import { CiCirclePlus } from "react-icons/ci";
 import { FaDeleteLeft } from "react-icons/fa6";
@@ -15,7 +15,7 @@ export default function DynamicInput() {
   const [inputs, setInputs] = useState([]); // Initial state with one input field
   const { currentUser } = useSelector((state) => state.user);
   const [selectedDates, setSelectedDates] = useState({});
-  const [Transctions, setTransactions] = useState([]); 
+  const [Transctions, setTransactions] = useState([]);
 
   console.log(Transctions);
   const handleAddInput = (index) => {
@@ -29,6 +29,9 @@ export default function DynamicInput() {
 
     newFormDataArray[index] = newFormDataArray[index] || {};
 
+    if (fieldName === "symbol") {
+      newFormDataArray[index][fieldName] = e.target.value.toUpperCase();
+    }
     // Initialize formData for the current index if it doesn't exist yet
     newFormDataArray[index][fieldName] = e.target.value;
 

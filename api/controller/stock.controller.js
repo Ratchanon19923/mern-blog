@@ -11,6 +11,7 @@ export const addTransactions = async (req, res, next) => {
     return next(errorHandler(400, "Data are required"));
   }
 
+
   try {
     for (const transac of transaction) {
       const newTransaction = new Stock({
@@ -28,7 +29,6 @@ export const addTransactions = async (req, res, next) => {
 };
 
 export const getTransactions = async (req, res, next) => {
-  
   if (!req.user.isAdmin || req.params.userId !== req.user.id) {
     return next(errorHandler(403, "You are not allowed to get transaction"));
   }

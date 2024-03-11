@@ -13,7 +13,7 @@ export default function StockPort() {
 
   const [exchange, setExchange] = useState(null);
 
-  const [transactons, setTransactions] = useState([]);
+  const [transactions, setTransactions] = useState([]);
 
   useEffect(() => {
     const exchangeRate = async () => {
@@ -39,7 +39,8 @@ export default function StockPort() {
         const res = await fetch(`api/stock/getTransactions/${currentUser._id}`);
         if (res.ok) {
           const data = await res.json();
-          setTransactions(data.transactions);
+          setTransactions('');
+          setTransactions(data.transactions)
         }
       } catch (error) {
         console.log(error.message);
@@ -48,7 +49,6 @@ export default function StockPort() {
     getTransactions();
   }, [currentUser]);
 
-  console.log(transactons);
 
   return (
     <div className="mx-auto p-8 w-full">
@@ -81,12 +81,15 @@ export default function StockPort() {
             <Table.HeadCell> Value </Table.HeadCell>
           </Table.Head>
           <Table.Body className="divide-y">
-            {transactons ? (
+            {transactions ? (
               <>
-                {transactons.map((transac) => (
-                  <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
+                {transactions.map((transac) => (
+                  <Table.Row
+                    key={transac._id}
+                    className="bg-white dark:border-gray-700 dark:bg-gray-800"
+                  >
                     <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                      {transac.dateBuy }
+                      {transac.dateBuy}
                     </Table.Cell>
                     <Table.Cell> {transac.symbol}</Table.Cell>
                     <Table.Cell> {transac.price}</Table.Cell>
