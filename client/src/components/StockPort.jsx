@@ -15,37 +15,36 @@ export default function StockPort() {
 
   const [transactions, setTransactions] = useState([]);
 
-  useEffect(() => {
-    const exchangeRate = async () => {
-      try {
-        const res = await fetch(
-          `https://open.er-api.com/v6/latest/${baseCurrency}?apikey=${apiKey}`
-        );
+  const exchangeRate = async () => {
+    try {
+      const res = await fetch(
+        `https://open.er-api.com/v6/latest/${baseCurrency}?apikey=${apiKey}`
+      );
 
-        if (res.ok) {
-          const data = await res.json();
-          setExchange(data.rates[targetCurrency]);
-        }
-      } catch (error) {
-        console.log(error.message);
+      if (res.ok) {
+        const data = await res.json();
+        setExchange(data.rates[targetCurrency]);
       }
-    };
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  const getTransactions = async () => {
+    try {
+      const res = await fetch(`api/stock/getTransactions/${currentUser._id}`);
+      if (res.ok) {
+        const data = await res.json();
+        setTransactions('');
+        setTransactions(data.transactions)
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  useEffect(() => {
     exchangeRate();
-  });
-
-  useEffect(() => {
-    const getTransactions = async () => {
-      try {
-        const res = await fetch(`api/stock/getTransactions/${currentUser._id}`);
-        if (res.ok) {
-          const data = await res.json();
-          setTransactions('');
-          setTransactions(data.transactions)
-        }
-      } catch (error) {
-        console.log(error.message);
-      }
-    };
     getTransactions();
   }, [currentUser]);
 
