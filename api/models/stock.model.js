@@ -5,6 +5,9 @@ const stockSchema = new mongoose.Schema(
     symbol: {
       type: String,
       required: true,
+      default: function () {
+        return this.symbol.toUpperCase();
+      },
     },
     volume: {
       type: Number,

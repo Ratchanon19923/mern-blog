@@ -11,13 +11,10 @@ let now = new Date(Date.now()).toLocaleDateString("en-US", {
   year: "numeric", // Full year (e.g., "2024")
 });
 
-export default function DynamicInput() {
+export default function DynamicInput({ onSubmit }) {
   const [inputs, setInputs] = useState([]); // Initial state with one input field
   const { currentUser } = useSelector((state) => state.user);
   const [selectedDates, setSelectedDates] = useState({});
-  const [Transctions, setTransactions] = useState([]);
-
-  console.log(Transctions);
   const handleAddInput = (index) => {
     const newDateInput = { ...inputs[index], dateBuy: now };
     setInputs([...inputs, newDateInput]); // Add a new empty input field to the inputs array
@@ -49,26 +46,8 @@ export default function DynamicInput() {
     e.preventDefault();
     const newTransaction = [...inputs];
 
-    try {
-      const res = await fetch(`/api/stock/addTransactions`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          data: newTransaction,
-          userId: currentUser._id,
-        }),
-      });
-
-      const data = await res.json();
-      if (res.ok) {
-        setInputs([]);
-        setTransactions(data);
-      }
-    } catch (error) {
-      console.log(error.message);
-    }
+    onSubmit(newTransaction);
+    setInputs([]);   
   };
 
   const handleDatePickerChange = (date, index) => {
